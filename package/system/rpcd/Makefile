@@ -8,19 +8,20 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=rpcd
-PKG_RELEASE:=2
+PKG_RELEASE:=3
 
 PKG_SOURCE_PROTO:=git
 PKG_SOURCE_URL=$(PROJECT_GIT)/project/rpcd.git
-PKG_SOURCE_DATE:=2019-06-05
-PKG_SOURCE_VERSION:=89bfaa42460696fb3c37c232f69c2afd5c6d909e
+PKG_SOURCE_DATE:=2020-09-18
+PKG_SOURCE_VERSION:=3fea6559817a22de1b8375b9b1f3d818e6534591
 PKG_MAINTAINER:=Jo-Philipp Wich <jo@mein.io>
-PKG_MIRROR_HASH:=c7ab910d4b3d135003d6c272968e8d73691aff4cdb367802e436ddf0c2d03435
+PKG_MIRROR_HASH:=d9284a23017c4393f210afb5bdc7f6d9e0b3ef46cc6e2cc2b2bcaa0199c942af
 
 PKG_LICENSE:=ISC
 PKG_LICENSE_FILES:=
 
 PKG_BUILD_PARALLEL:=1
+PKG_ASLR_PIE_REGULAR:=1
 
 include $(INCLUDE_DIR)/package.mk
 include $(INCLUDE_DIR)/cmake.mk
@@ -62,6 +63,8 @@ define Package/rpcd/install
 	$(INSTALL_DATA) $(PKG_BUILD_DIR)/unauthenticated.json $(1)/usr/share/rpcd/acl.d/unauthenticated.json
 	$(INSTALL_DIR) $(1)/etc/config
 	$(INSTALL_CONF) ./files/rpcd.config $(1)/etc/config/rpcd
+	$(INSTALL_DIR) $(1)/etc/uci-defaults
+	$(INSTALL_BIN) ./files/50-migrate-rpcd-ubus-sock.sh $(1)/etc/uci-defaults
 endef
 
 
